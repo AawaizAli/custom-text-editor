@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Text Editor</title>
+    <style>
+        #editor {
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 200px;
+            outline: none;
+        }
+
+        .toolbar button {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="toolbar">
+        <button onclick="formatText('bold')">Bold</button>
+        <button onclick="formatText('italic')">Italic</button>
+        <button onclick="formatText('underline')">Underline</button>
+    </div>
+    <div id="editor" contenteditable="true"></div>
+
+    <script>
+        function formatText(command) {
+            const selection = window.getSelection();
+            if (!selection.rangeCount) return;
+
+            const range = selection.getRangeAt(0);
+
+            if (command === 'bold') {
+                applyStyle(range, 'strong');
+            } else if (command === 'italic') {
+                applyStyle(range, 'em');
+            } else if (command === 'underline') {
+                applyStyle(range, 'u');
+            }
+        }
+
+        function applyStyle(range, tag) {
+            const span = document.createElement(tag);
+            span.appendChild(range.extractContents());
+            range.insertNode(span);
+            // Re-select the text after applying the style
+            const newRange = document.createRange();
+            newRange.setStartBefore(span);
+            newRange.setEndAfter(span);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+        }
+
+    </script>
+</body>
+
+</html>

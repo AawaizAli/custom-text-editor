@@ -2,13 +2,15 @@ import React from 'react';
 import { Layout, Menu, Row, Col, Input } from 'antd';
 import './App.css'
 import { useState } from 'react';
+import TextEditor from './TextEditor';
+import BoldFunc from './BoldFunc';
 
 const { Header, Content } = Layout;
 const { TextArea } = Input;
 
 const App = () => {
 
-  const [editorContent, setEditorContent] = useState('Hello World')
+  const [editorContent, setEditorContent] = useState('Hello World');
 
   function makeBold() {
     document.execCommand('bold', false, null);
@@ -36,40 +38,42 @@ const App = () => {
   }
 
   return (
-    <Layout className='container' style={{ minHeight: '100vh' }}>
-      <Content style={{ padding: '20px', height: '100%' }}>
-        <Row gutter={16} style={{ height: '100%' }}>
-          <Col span={12} style={{ display: 'flex', flexDirection: 'column' }}>
-            <Menu style={{fontSize: '16px'}} mode="horizontal">
-              <Menu.Item key="bold">
-                <b>B</b>
-              </Menu.Item>
-              <Menu.Item key="italic">
-                <i>i</i>
-              </Menu.Item>
-              <Menu.Item key="underline">
-                <u>U</u>
-              </Menu.Item>
-            </Menu>
-            <TextArea
-              rows={20}
-              id='editor'
-              value={editorContent}
-              style={{ resize: 'none', flex: 1, marginTop: '8px' }}
-            />
-          </Col>
-          <Col span={12} style={{ display: 'flex', flexDirection: 'column' }}>
-            <TextArea
-              rows={20}
-              id='htmlOutput'
-              value="HTML output will appear here..."
-              style={{ resize: 'none', flex: 1, backgroundColor: '#f0f0f0' }}
-              readOnly
-            />
-          </Col>
-        </Row>
-      </Content>
-    </Layout>
+    <BoldFunc></BoldFunc>
+    // <TextEditor/>
+    // <Layout className='container' style={{ minHeight: '100vh' }}>
+    //   <Content style={{ padding: '20px', height: '100%' }}>
+    //     <Row gutter={16} style={{ height: '100%' }}>
+    //       <Col span={12} style={{ display: 'flex', flexDirection: 'column' }}>
+    //         <Menu style={{fontSize: '16px'}} mode="horizontal">
+    //           <Menu.Item key="bold">
+    //             <b>B</b>
+    //           </Menu.Item>
+    //           <Menu.Item key="italic">
+    //             <i>i</i>
+    //           </Menu.Item>
+    //           <Menu.Item key="underline">
+    //             <u>U</u>
+    //           </Menu.Item>
+    //         </Menu>
+    //         <TextArea
+    //           rows={20}
+    //           id='editor'
+    //           value={editorContent}
+    //           style={{ resize: 'none', flex: 1, marginTop: '8px' }}
+    //         />
+    //       </Col>
+    //       <Col span={12} style={{ display: 'flex', flexDirection: 'column' }}>
+    //         <TextArea
+    //           rows={20}
+    //           id='htmlOutput'
+    //           value="HTML output will appear here..."
+    //           style={{ resize: 'none', flex: 1, backgroundColor: '#f0f0f0' }}
+    //           readOnly
+    //         />
+    //       </Col>
+    //     </Row>
+    //   </Content>
+    // </Layout>
   );
 };
 

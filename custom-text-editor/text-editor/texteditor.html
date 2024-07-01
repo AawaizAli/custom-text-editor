@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Text Editor</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+        textarea {
+            width: 45%;
+            height: 300px;
+        }
+
+        #editor {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        #htmlOutput {
+            border: 1px solid #ccc;
+            padding: 10px;
+            white-space: pre-wrap;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <button onclick="makeBold()">Bold</button>
+        <button onclick="makeItalic()">Italic</button>
+        <button onclick="makeUnderline()">Underline</button>
+        <div id="editor" contenteditable="true">
+            hello world
+        </div>
+    </div>
+    <textarea id="htmlOutput" readonly></textarea>
+
+    <script>
+        function makeBold() {
+            document.execCommand('bold', false, null);
+            updateHtmlOutput();
+        }
+
+        function makeItalic() {
+            document.execCommand('italic', false, null);
+            updateHtmlOutput();
+        }
+
+        function makeUnderline() {
+            document.execCommand('underline', false, null);
+            updateHtmlOutput();
+        }
+
+        function updateHtmlOutput() {
+            const editor = document.getElementById('editor');
+            const htmlOutput = document.getElementById('htmlOutput');
+            htmlOutput.value = formatHtml(editor.innerHTML);
+        }
+
+        function formatHtml(html) {
+            return `<p>\n  ${html.split('\n').map(line => `<span>${line}</span>`).join('\n  ')}\n</p>`;
+        }
+
+        document.getElementById('editor').addEventListener('input', updateHtmlOutput);
+        window.onload = updateHtmlOutput;
+    </script>
+</body>
+
+</html>

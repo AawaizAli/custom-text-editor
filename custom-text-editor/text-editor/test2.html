@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Text Editor</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        textarea {
+            width: 45%;
+            height: 300px;
+        }
+        #editor {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        #htmlOutput {
+            border: 1px solid #ccc;
+            padding: 10px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button onclick="wrapTextWith('b')">Bold</button>
+        <button onclick="wrapTextWith('i')">Italic</button>
+        <button onclick="wrapTextWith('u')">Underline</button>
+        <button onclick="unwrapText()">Unwrap</button>
+        <div id="editor" contenteditable="true">
+            hello world
+        </div>
+    </div>
+    <textarea id="htmlOutput" readonly></textarea>
+
+    <script>
+        function wrapTextWith(tag) {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const span = document.createElement(tag);
+                span.appendChild(range.extractContents());
+                range.insertNode(span);
+                updateHtmlOutput();
+            }
+        }
+
+        function unwrapText() {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const startContainer = range.startContainer;
+                const endContainer = range.endContainer;
+
+                // Ensure the selected range is within the same parent node
+                if (startContainer.parentNode === endContainer.parentNode) {
+                    const parent = startContainer.parentNode;
+                    if (parent.nodeName === 'B' || parent.nodeName === 'I' || parent.nodeName === 'U') {
+                        while (parent.firstChild) {
+                            parent.parentNode.insertBefore(parent.firstChild, parent);
+                        }
+                        parent.parentNode.removeChild(parent);
+                        updateHtmlOutput();
+                    }
+                }
+            }
+        }
+
+        function updateHtmlOutput() {
+            const editor = document.getElementById('editor');
+            const htmlOutput = document.getElementById('htmlOutput');
+            htmlOutput.value = formatHtml(editor.innerHTML);
+        }
+
+        function formatHtml(html) {
+            return `<p>\n  ${html.split('\n').map(line => `<span>${line}</span>`).join('\n  ')}\n</p>`;
+        }
+
+        document.getElementById('editor').addEventListener('input', updateHtmlOutput);
+        window.onload = updateHtmlOutput;
+    </script>
+</body>
+</html>
